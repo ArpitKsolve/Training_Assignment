@@ -1,0 +1,39 @@
+<aura:component controller="MultiselectApex">
+    
+    <aura:attribute name="sObjectOptions" type="List" />
+    <aura:attribute name="selectedSObject" type="String" />
+    <aura:attribute name="fieldOptions" type="List" />
+    <aura:attribute name="selectedFields" type="List" />
+    <aura:attribute name="queryResult" type="String" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+    <lightning:select name="sObjectSelector" label="Select SObject" aura:id="sObjectSelector" onchange="{!c.getFields}">
+        <option value="">-- Select SObject --</option>
+        <aura:iteration items="{!v.sObjectOptions}" var="sObject">
+            <option value="{!sObject}">{!sObject}</option>
+        </aura:iteration>
+    </lightning:select>
+
+    <aura:if isTrue="{!not(empty(v.fieldOptions))}">
+        <lightning:dualListbox name="fieldSelector"
+                               label="Select Fields" 
+                               sourceLabel="Available"
+                               selectedLabel="Selected"
+                               options="{!v.fieldOptions}" 
+                               value="{!v.selectedFields}"  />
+   </aura:if>
+    
+   <aura:if isTrue="{!not(empty(v.fieldOptions))}">
+   <div class="slds-text-align_center slds-border">
+        <lightning:button label="Generate Query" onclick="{!c.generateQuery}" />
+    </div>
+   </aura:if>
+    
+   
+    <aura:if isTrue="{!not(empty(v.queryResult)) &amp;&amp; not(empty(v.selectedFields)) }">
+        <lightning:textarea value="{!v.queryResult}" />
+    </aura:if>
+    
+    
+</aura:component>
